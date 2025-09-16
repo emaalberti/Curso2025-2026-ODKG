@@ -1,0 +1,2 @@
+Your name;Your GitHub user;Dataset name;Dataset URL;Dataset brief description
+Emanuele Emilio Alberti;emaalberti;RamAnanth1/lex-fridman-podcasts;https://huggingface.co/datasets/RamAnanth1/lex-fridman-podcasts;This dataset contains transcriptions of Lex Fridman podcasts. It has 2 columns: the podcast's title and the transcription. I have used this dataset to fine-tune a model, and it is pretty accurate.
