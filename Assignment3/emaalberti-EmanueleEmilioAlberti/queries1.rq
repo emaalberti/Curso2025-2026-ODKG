@@ -1,0 +1,173 @@
+Emanuele Emilio Alberti - Queries - Exercise1
+
+- First 15 queries on the pdf file
+- Their results in the file results1.txt
+
+
+##################################################
+# Query 1 – Get all the classes
+##################################################
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT DISTINCT ?class
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE { ?class a rdfs:Class . }
+
+
+##################################################
+# Query 2 – Get the subclasses of the class Establishment
+##################################################
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?subclass
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?subclass rdfs:subClassOf <http://GP-onto.fi.upm.es/exercise2#Establishment> .
+}
+
+
+##################################################
+# Query 3 – Get the instances of the class City
+##################################################
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT ?city
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?city rdf:type <http://GP-onto.fi.upm.es/exercise2#City> .
+}
+
+
+##################################################
+# Query 4 – Get the number of inhabitants of Santiago de Compostela
+##################################################
+SELECT ?inhabitants
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  <http://GP-onto.fi.upm.es/exercise2#Santiago_de_Compostela>
+    <http://GP-onto.fi.upm.es/exercise2#hasInhabitantNumber> ?inhabitants .
+}
+
+
+##################################################
+# Query 5 – Get the number of inhabitants of Santiago de Compostela and of Arzua
+##################################################
+SELECT ?city ?inhabitants
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  VALUES ?city {
+    <http://GP-onto.fi.upm.es/exercise2#Santiago_de_Compostela>
+    <http://GP-onto.fi.upm.es/exercise2#Arzua>
+  }
+  ?city <http://GP-onto.fi.upm.es/exercise2#hasInhabitantNumber> ?inhabitants .
+}
+
+
+##################################################
+# Query 6 – Get different places with the inhabitants number, ordering the results by name
+##################################################
+SELECT ?place ?inhabitants
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?place <http://GP-onto.fi.upm.es/exercise2#hasInhabitantNumber> ?inhabitants .
+}
+ORDER BY ?place
+
+
+##################################################
+# Query 7 – Get all the instances of Locality with their inhabitant number (if it exists)
+##################################################
+SELECT ?locality ?inhabitants
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?locality a <http://GP-onto.fi.upm.es/exercise2#Locality> .
+  OPTIONAL { ?locality <http://GP-onto.fi.upm.es/exercise2#hasInhabitantNumber> ?inhabitants . }
+}
+
+
+##################################################
+# Query 8 – Get all the places with more than 200,000 inhabitants
+##################################################
+SELECT ?place ?inhabitants
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?place <http://GP-onto.fi.upm.es/exercise2#hasInhabitantNumber> ?inhabitants .
+  FILTER(xsd:integer(?inhabitants) > 200000)
+}
+
+
+##################################################
+# Query 9 – Get postal data of Pazo_Breogan (street, number, locality, province)
+##################################################
+SELECT ?street ?number ?locality ?province
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  <http://GP-onto.fi.upm.es/exercise2#Pazo_Breogan>
+    <http://GP-onto.fi.upm.es/exercise2#hasAddress> ?address .
+  OPTIONAL { ?address <http://GP-onto.fi.upm.es/exercise2#hasStreet> ?street . }
+  OPTIONAL { ?address <http://GP-onto.fi.upm.es/exercise2#hasNumber> ?number . }
+  OPTIONAL { ?address <http://GP-onto.fi.upm.es/exercise2#isPlacedIn> ?locality . }
+  OPTIONAL { ?address <http://GP-onto.fi.upm.es/exercise2#inProvince> ?province . }
+}
+
+
+##################################################
+# Query 10 – Get the subclasses of class Location
+##################################################
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?subclass
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?subclass rdfs:subClassOf <http://GP-onto.fi.upm.es/exercise2#Location> .
+}
+
+
+##################################################
+# Query 11 – Get the instances of class Locality
+##################################################
+SELECT ?locality
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?locality a <http://GP-onto.fi.upm.es/exercise2#Locality> .
+}
+
+
+##################################################
+# Query 12 – Describe the resource with rdfs:label "Madrid"
+##################################################
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+DESCRIBE ?resource
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?resource rdfs:label "Madrid" .
+}
+
+
+##################################################
+# Query 13 – Construct RDF graph: touristic places and their provinces (using new property isIn)
+##################################################
+CONSTRUCT {
+  ?place <http://GP-onto.fi.upm.es/exercise2#isIn> ?province .
+}
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?place a <http://GP-onto.fi.upm.es/exercise2#TouristicLocation> .
+  ?place <http://GP-onto.fi.upm.es/exercise2#inProvince> ?province .
+}
+
+
+##################################################
+# Query 14 – Ask if there is some instance of Town
+##################################################
+ASK
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?town a <http://GP-onto.fi.upm.es/exercise2#Town> .
+}
+
+
+##################################################
+# Query 15 – Ask if there is some instance of Chapel
+##################################################
+ASK
+FROM <http://sandbox.linkeddata.es/Grado_20122013>
+WHERE {
+  ?chapel a <http://GP-onto.fi.upm.es/exercise2#Chapel> .
+}

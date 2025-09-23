@@ -1,0 +1,54 @@
+Emanuele Emilio Alberti - Queries - Exercise2
+
+- Results on results2
+
+2.1
+
+SELECT DISTINCT ?property
+WHERE {
+  ?s a <http://dbpedia.org/ontology/Politician> ;
+     ?property ?o .
+}
+
+2.2
+
+SELECT DISTINCT ?property
+WHERE {
+  ?s a <http://dbpedia.org/ontology/Politician> ;
+     ?property ?o .
+  FILTER (?property != rdf:type)
+}
+
+2.3
+
+SELECT DISTINCT ?property ?value
+WHERE {
+  ?s a <http://dbpedia.org/ontology/Politician> ;
+     ?property ?value .
+  FILTER (?property != rdf:type)
+}
+
+
+2.4
+
+SELECT DISTINCT ?property ?value
+WHERE {
+  ?s a <http://dbpedia.org/ontology/Politician> ;
+     ?property ?value .
+  FILTER (?property != rdf:type)
+}
+ORDER BY ?property ?value
+
+
+2.5
+
+SELECT ?property (COUNT(DISTINCT ?value) AS ?countValues)
+WHERE {
+  ?s a <http://dbpedia.org/ontology/Politician> ;
+     ?property ?value .
+  FILTER (?property != rdf:type)
+}
+GROUP BY ?property
+ORDER BY DESC(?countValues)
+
+
